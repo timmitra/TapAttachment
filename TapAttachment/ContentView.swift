@@ -70,8 +70,9 @@ struct ContentView: View {
                     isTapped.toggle()
                     if isTapped {
                         isShowing = true
+                        // remove this if you want it to stay
                         Task {
-                            try await Task.sleep(nanoseconds: 2_000_000_000) // 2 seconds
+                            try await Task.sleep(nanoseconds: 5_000_000_000) // 5 seconds
                             isShowing = false
                         }
                     } else {
