@@ -14,15 +14,13 @@ import RealityKit
 
 struct ContentView: View {
     @State private var isTapped: Bool = false
-   // @State var cube = Entity()
-    //let cube = try! Entity.load(named: "Cube")
+    @State private var isShowing: Bool = false
     @State private var cube: Entity?
     
     var body: some View {
         Text("Hello World!")
         RealityView { content, attachments in
             
-            //cube = ModelEntity(mesh: .generateBox(width: 0.1, height: 0.1, depth: 0.1), materials: [SimpleMaterial(color:.white, isMetallic: false)])
             do {
                 let localEntity = try await Entity(named: "Cube")
                 cube = localEntity
@@ -40,7 +38,7 @@ struct ContentView: View {
             }
             
         } update: { content, attachments in
-            if isTapped {
+            if isShowing {
                 if let text = attachments.entity(for: "cube1") {
                     text.position = [0, 0.2, 0]
                     
@@ -49,7 +47,6 @@ struct ContentView: View {
                         .addChild(text, preservingWorldTransform: true)
                 }
             } else {
-                // Hide the attachment by removing it from the parent
                 if let text = attachments.entity(for: "cube1") {
                     content.entities.first?
                         .findEntity(named: "Cube")?
@@ -66,10 +63,15 @@ struct ContentView: View {
             SpatialTapGesture()
                 .targetedToAnyEntity(/*cube ?? Entity()*/)
                 .onEnded { _ in
-                    isTapped = true
-                    Task {
-                        try await Task.sleep(nanoseconds: 100_000_000)
-                        isTapped = false
+                    isTapped.toggle()
+                    if isTapped {
+                        isShowing = true
+                        Task {
+                            try await Task.sleep(nanoseconds: 2_000_000_000) // 2 seconds
+                            isShowing = false
+                        }
+                    } else {
+                        isShowing = false
                     }
                 }
         )
