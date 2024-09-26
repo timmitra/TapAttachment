@@ -18,7 +18,7 @@ struct ContentView: View {
     @State private var cube: Entity?
     
     var body: some View {
-        Text("Hello World!")
+
         RealityView { content, attachments in
             
             do {
@@ -26,7 +26,11 @@ struct ContentView: View {
                 cube = localEntity
                 cube?.position = [0.0, 0.0, 0.0]
                 cube?.components.set(InputTargetComponent())
-                cube?.components.set(CollisionComponent(shapes: [.generateBox(width: 0.1, height: 0.1, depth: 0.1)]))
+                if let bounds = cube?.visualBounds(relativeTo: cube) {
+                    let size = bounds.extents // Get the size of the cube
+                    let collisionShape = ShapeResource.generateBox(size: size)
+                    cube?.components.set(CollisionComponent(shapes: [collisionShape]))
+                }
                 guard let cube else {
                     print("can't find cube")
                     return
