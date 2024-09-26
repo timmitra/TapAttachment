@@ -17,5 +17,6 @@ struct TapAttachmentApp: App {
         WindowGroup {
             ContentView()
         }
+        .windowStyle(.plain)
     }
 }
