@@ -11,20 +11,17 @@
 
 import SwiftUI
 import RealityKit
-import RealityKitContent
 
 struct ContentView: View {
     let cube = try? Entity.load(named: "Cube.usdz")
     @State private var isTapped: Bool = false
     
     var body: some View {
-        VStack {
-            Model3D(named: "Scene", bundle: realityKitContentBundle)
-                .padding(.bottom, 50)
-
-            Text("Hello, world!")
+        RealityView { content, attachments in
+        } update: { content, attachments in
+        } attachments: {
+            
         }
-        .padding()
     }
 }
 
