@@ -44,7 +44,7 @@ struct ContentView: View {
         } update: { content, attachments in
             if isShowing {
                 if let text = attachments.entity(for: "cube1") {
-                    text.position = [0, 0.2, 0]
+                    text.position = [0, 0.2, 0.25]
                     
                     content.entities.first?
                         .findEntity(named: "Cube")?
@@ -65,7 +65,7 @@ struct ContentView: View {
         }
         .gesture(
             SpatialTapGesture()
-                .targetedToAnyEntity(/*cube ?? Entity()*/)
+                .targetedToEntity(cube ?? Entity())
                 .onEnded { _ in
                     isTapped.toggle()
                     if isTapped {
